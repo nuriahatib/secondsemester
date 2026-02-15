@@ -21,9 +21,7 @@ The audit addressed two primary "broken" sources of truth:
 ## 3. Solution Architecture
 
 ### Part A: Python Data Cleaning & Standardization (`clean_transactions.py`)
-
 The Python script serves as the ETL layer. It navigates nested dictionaries, standardizes currency via Regular Expressions, and filters out non-commercial noise.
-
 * **Currency Normalization:** Converts all formats into a standardized `amount_usd` float.
 * **Filtering:** Removes records flagged as "test" or "sandbox" and "heartbeat" events.
 * **Sanitization:** Drops records missing critical identifiers like `payment_id`.
@@ -59,27 +57,19 @@ The following figures represent the audited financial state of QuickCart for the
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/NuriaHatibu/QuickCart-Audit.git
-
+git clone https://github.com/nuriahatibu/secondsemester.git
 ```
-
 
 2. Install dependencies:
 ```bash
 pip install pymongo pandas
-
 ```
 
-
-
 ### Execution
-
 1. **Run the Python ETL:**
 ```bash
 python clean_transactions.py
-
 ```
-
 
 2. **Initialize Database & Load Seeds:**
 ```powershell
@@ -87,17 +77,12 @@ psql -d quickcart_audit -f schema.sql
 psql -d quickcart_audit -f seed_orders.sql
 psql -d quickcart_audit -f seed_payments.sql
 psql -d quickcart_audit -f seed_bank_settlements.sql
-
 ```
-
 
 3. **Run the Reconciliation Report:**
 ```powershell
-psql -d quickcart_audit -f reconciliation.sql
-
+psql -d secondsemester -f reconciliation.sql
 ```
 
-
 ## 6. Conclusion
-
 The audit reveals that while the internal system recorded **$5.27M** in successful sales, the bank settled significantly more, leading to a negative discrepancy gap. This suggests a failure in the internal system's ability to record "Success" callbacks for all processed transactions. These results provide a defensible foundation for the Finance team to close the month and resolve the P0 incident.
